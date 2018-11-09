@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "port": "/dev/cu.wchusbserial14140",
+    "sketch": "motor_driver_test.ino"
+}
