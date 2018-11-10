@@ -8,13 +8,21 @@ void setup(){
 
 void loop(){
   //モーターの強さ指定
-  // int val = 50; //0~255の値にする
+    // int val = 50; //0~255の値にする
 
-  //アナログ入力:0番ピンの値を4で割る
-  int val = analogRead(0) / 4; // 0~255の値にする
+    //アナログ入力:0番ピンの値を4で割る
+    int val = analogRead(0) / 4; // 0~255の値にする
 
-  digitalWrite(1, LOW);
-  digitalWrite(2, HIGH);
+  //正転/逆転切り替え
+  int dir = analogRead(2) / 4;
+
+  if (dir < 122) {
+      digitalWrite(1, LOW);
+      digitalWrite(2, HIGH);
+  } else {
+    digitalWrite(1, HIGH);
+    digitalWrite(2, LOW);
+  }
 
   analogWrite(3, val);
 }
