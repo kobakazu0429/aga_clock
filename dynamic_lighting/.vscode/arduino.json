@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "port": "/dev/cu.wchusbserial14140",
+    "sketch": "dynamic_lighting.ino"
+}
