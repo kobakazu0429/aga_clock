@@ -1,10 +1,8 @@
 #include <Wire.h>
 
-#define ALARMOFF (4)
 #define SRCLK (5)
 #define RCLK (6)
 #define SER (7)
-
 
 const int cathode_pins[] = {9, 10, 11, 12};
 const int cathode_pins_length = sizeof(cathode_pins) / sizeof(cathode_pins[0]);
@@ -27,16 +25,19 @@ int RegTbl[16];
 byte DEVICE_ADDRESS = 0x51;
 
 // 2進化10進数(BCD)を10進数に変換
-byte BCDtoDec(byte value) { return ((value >> 4) * 10) + (value & 0x0F); }
+byte BCDtoDec(byte value) {
+  return ((value >> 4) * 10) + (value & 0x0F);
+}
 
 // 外部割り込みが発生した時に動作します。
-void myInterrupt() { state = !state; }
+void myInterrupt() {
+   state = !state;
+}
 
 void setup() {
   pinMode(SRCLK, OUTPUT);
   pinMode(RCLK, OUTPUT);
   pinMode(SER, OUTPUT);
-  pinMode(ALARMOFF, INPUT);
 
   for (int i = 0; i < cathode_pins_length; i++) {
     pinMode(cathode_pins[i], OUTPUT);
@@ -89,24 +90,6 @@ void setup() {
   Wire.write(0x17);
 
   // ---------------------------------
-  //  アラームレジスタ
-  // ---------------------------------
-  // 先頭bitに1がある場合(0x80)はアラーム対象外となる
-
-  // 例)次のコードは「25日(月)12時21分」にアラームが設定されていますが、
-  //    「25日」と「(月)」には0x80がありますので、実際のアラームは「12時21分」で毎日となります。
-
-  // [09]Minutes alarm(21分)
-  Wire.write(0x21);
-  // [0A]Hours Alarm(12時)
-  Wire.write(0x12);
-  // [0B]Days Alarm(25日)
-  Wire.write(0x25 | 0x80);
-  // [0C]Weekdays Alarm(月)
-  // 0:日 1:月 2:火 3:水 4:木 5:金 6:土
-  Wire.write(0x01 | 0x80);
-
-  // ---------------------------------
   //  クロック出力レジスタ
   // ---------------------------------
 
@@ -156,7 +139,6 @@ int getNum(int id) {
 void loop() {
   currentNum = String(BCDtoDec(RegTbl[4] & 0x3F)) + String(BCDtoDec(RegTbl[3] & 0x7F));
   displayNumbers();
-  int i;
 
   // 外部割込みが発生した場合
   if (state == HIGH) {
@@ -169,9 +151,8 @@ void loop() {
     Wire.requestFrom(DEVICE_ADDRESS, 16);
 
     // 16byteのデータを取得する
-    for (i = 0; i < 16; i++) {
-      while (Wire.available() == 0) {
-      }
+    for (int i = 0; i < 16; i++) {
+      while (Wire.available() == 0) {}
       RegTbl[i] = Wire.read();
     }
 
@@ -182,88 +163,21 @@ void loop() {
     Serial.print(String(BCDtoDec(RegTbl[5] & 0x3F)) + "日");
 
     switch (RegTbl[6] & 0x07) {
-    case 0:
-      Serial.print("(日)");
-      break;
-    case 1:
-      Serial.print("(月)");
-      break;
-    case 2:
-      Serial.print("(火)");
-      break;
-    case 3:
-      Serial.print("(水)");
-      break;
-    case 4:
-      Serial.print("(木)");
-      break;
-    case 5:
-      Serial.print("(金)");
-      break;
-    case 6:
-      Serial.print("(土)");
-      break;
+      case 0: Serial.print("(日)"); break;
+      case 1: Serial.print("(月)"); break;
+      case 2: Serial.print("(火)"); break;
+      case 3: Serial.print("(水)"); break;
+      case 4: Serial.print("(木)"); break;
+      case 5: Serial.print("(金)"); break;
+      case 6: Serial.print("(土)"); break;
     }
+
     Serial.print(" ");
     Serial.print(String(BCDtoDec(RegTbl[4] & 0x3F)) + "時");
     Serial.print(String(BCDtoDec(RegTbl[3] & 0x7F)) + "分");
     Serial.print(String(BCDtoDec(RegTbl[2] & 0x7F)) + "秒");
-
-    // アラーム日時
-    Serial.print(" アラーム：");
-    if ((RegTbl[11] & 0x80) == 0) {
-      Serial.print(String(BCDtoDec(RegTbl[11] & 0x3F)) + "日");
-    }
-
-    if ((RegTbl[12] & 0x80) == 0) {
-      switch (RegTbl[12] & 0x07) {
-      case 0:
-        Serial.print("(日) ");
-        break;
-      case 1:
-        Serial.print("(月) ");
-        break;
-      case 2:
-        Serial.print("(火) ");
-        break;
-      case 3:
-        Serial.print("(水) ");
-        break;
-      case 4:
-        Serial.print("(木) ");
-        break;
-      case 5:
-        Serial.print("(金) ");
-        break;
-      case 6:
-        Serial.print("(土) ");
-        break;
-      }
-    }
-
-    if ((RegTbl[10] & 0x80) == 0) {
-      Serial.print(String(BCDtoDec(RegTbl[10] & 0x3F)) + "時");
-    }
-
-    if ((RegTbl[9] & 0x80) == 0) {
-      Serial.print(String(BCDtoDec(RegTbl[9] & 0x7F)) + "分");
-    }
-
     Serial.println("");
+
     state = !state;
-  }
-
-  // ボタン押下時にアラーム割り込みイベントをクリアする(LEDを消灯する)
-  if (digitalRead(ALARMOFF) == HIGH)
-  {
-    // レジスタのアドレスをControl2にする
-    Wire.beginTransmission(DEVICE_ADDRESS);
-    Wire.write(0x01);
-
-    // アラーム割り込みが発生した際に
-    // Control2の4bit目のAFフラグが「1」になるので「0」にする
-    // それにより、3ピン[INT]がHIGHになりLEDが消灯します。
-    Wire.write(0x02);
-    Wire.endTransmission();
   }
 }
