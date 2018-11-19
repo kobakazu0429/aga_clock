@@ -1,5 +1,4 @@
 #include <Wire.h>
-#include <MsTimer2.h>
 
 #define ALARMOFF (4)
 #define SRCLK (5)
@@ -14,7 +13,7 @@ const uint8_t PATTERNS[] = {0b11111100, 0b01100000, 0b11011010, 0b11110010,
                             0b01100110, 0b10110110, 0b10111110, 0b11100100,
                             0b11111110, 0b11110110};
 
-int currentNum = 0;
+String currentNum = "0000";
 
 // 外部割り込みの状態
 volatile int state = LOW;
@@ -43,11 +42,7 @@ void setup() {
     pinMode(cathode_pins[i], OUTPUT);
   }
 
-  MsTimer2::set(1000, countUp);
-  MsTimer2::start();
-
   Serial.begin(9600);
-
 
   // 2ピンの状態がLOWからHIGHに変化した場合に外部割り込みを発生させる
   attachInterrupt(digitalPinToInterrupt(2), myInterrupt, RISING);
@@ -155,19 +150,11 @@ void displayNumbers() {
 }
 
 int getNum(int id) {
-  char parsed[24] = "";
-  sprintf(parsed, "%04d", currentNum);
-
-  String parsed_num = String(parsed);
-
-  return String(parsed_num[id]).toInt();
-}
-
-void countUp() {
-  currentNum++;
+  return String(currentNum[id]).toInt();
 }
 
 void loop() {
+  currentNum = String(BCDtoDec(RegTbl[4] & 0x3F)) + String(BCDtoDec(RegTbl[3] & 0x7F));
   displayNumbers();
   int i;
 
