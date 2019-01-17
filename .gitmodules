@@ -1,0 +1,3 @@
+[submodule "libs/RTC8564"]
+	path = libs/RTC8564
+	url = git@github.com:garretlab/RTC8564.git
