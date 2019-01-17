@@ -1,3 +1,6 @@
 [submodule "libs/RTC8564"]
 	path = libs/RTC8564
 	url = git@github.com:garretlab/RTC8564.git
+[submodule "libs/DFPlayer-Mini-mp3"]
+	path = libs/DFPlayer-Mini-mp3
+	url = git@github.com:DFRobot/DFPlayer-Mini-mp3.git
