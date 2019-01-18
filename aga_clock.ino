@@ -1,7 +1,11 @@
 #include "SevenSegmentController.h"
 #include "RTC8564.h"
+#include "DFPlayer_Mini_Mp3.h"
+#include <SoftwareSerial.h>
 
 SevenSegmentController SevenSegmentController;
+
+boolean flag = false;
 
 void setup() {
   struct dateTime dt = {0, 30, 12, 1, 1, 19, 2};
@@ -11,6 +15,10 @@ void setup() {
   RTC8564.setAlarm(RTC8564_AE_MINUTE, &at, 0);
 
   String currentClock = "0000";
+
+  Serial.begin(9600);
+  mp3_set_serial(Serial);
+  mp3_set_volume(10);
 }
 
 void loop() {
@@ -24,7 +32,10 @@ void loop() {
   }
 
   if (RTC8564.getAlarmFlag()) {
-    // processing ...
+    if(!flag){
+      mp3_play(3);
+      flag = true;
+    }
     RTC8564.clearAlarmFlag();
   }
 
