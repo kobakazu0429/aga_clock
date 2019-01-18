@@ -10,6 +10,36 @@ ln -s path/to/aga_clock/libs/DFPlayer-Mini-mp3/DFPlayer_Mini_Mp3/DFPlayer_Mini_M
 ln -s path/to/aga_clock/libs/DFPlayer-Mini-mp3/DFPlayer_Mini_Mp3/DFPlayer_Mini_Mp3.cpp path/to/aga_clock/DFPlayer_Mini_Mp3.cpp
 ```
 
+## Environment Variables
+
+### 阿賀小学校
+
+```c
+// aga_clock.ino
+int model = 1;
+```
+
+### 原小学校
+
+```c
+// aga_clock.ino
+int model = 2;
+```
+
+### 市民センター
+
+```c
+// aga_clock.ino
+int model = 3;
+```
+
+### まちづくりセンター
+
+```c
+// aga_clock.ino
+int model = 4;
+```
+
 ## Libraries
 
 1. [garretlab/RTC8564](https://github.com/garretlab/RTC8564)
