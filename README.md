@@ -1,13 +1,10 @@
 # aga_clock
 
-## Usage
+## Setup
 
 ```bash
-ln -s path/to/aga_clock/libs/RTC8564/RTC8564.h path/to/aga_clock/RTC8564.h
-ln -s path/to/aga_clock/libs/RTC8564/RTC8564.cpp path/to/aga_clock/RTC8564.cpp
-
-ln -s path/to/aga_clock/libs/DFPlayer-Mini-mp3/DFPlayer_Mini_Mp3/DFPlayer_Mini_Mp3.h path/to/aga_clock/DFPlayer_Mini_Mp3.h
-ln -s path/to/aga_clock/libs/DFPlayer-Mini-mp3/DFPlayer_Mini_Mp3/DFPlayer_Mini_Mp3.cpp path/to/aga_clock/DFPlayer_Mini_Mp3.cpp
+# Create Libs Symbolic Links
+bash ./setup.sh
 ```
 
 ## Environment Variables
