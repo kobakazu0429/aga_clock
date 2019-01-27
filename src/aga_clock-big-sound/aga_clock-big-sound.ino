@@ -5,6 +5,7 @@
 
 int model = 3;
 boolean isPlaying = false;
+int next = 1;
 
 SevenSegmentController SevenSegmentController;
 
@@ -61,6 +62,22 @@ void addMinutes() {
   RTC8564.setDateTime(&newDatetime);
 }
 
+void playMusic() {
+  // mp3_play(4);
+
+  if (next == 1) {
+    mp3_play(3);
+    struct alarmTime at = {10, 13, 1, 2};
+    RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
+    next = 2;
+  } else if (next == 2) {
+    mp3_play(4);
+    struct alarmTime at = {15, 13, 1, 2};
+    RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
+    next = 1;
+  }
+}
+
 void loop() {
   struct dateTime dt;
   char RTCTime[4];
@@ -75,8 +92,8 @@ void loop() {
   }
 
   if (RTC8564.getAlarmFlag()) {
-    mp3_play(4);
     RTC8564.clearAlarmFlag();
+    playMusic();
   }
 
   String currentClock = RTCTime;
