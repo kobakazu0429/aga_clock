@@ -14,21 +14,12 @@ private:
   static const int RCLK = 6;
   static const int SER = 7;
 
-  int CATHODE_PINS[4] = {9, 10, 11, 12};
-  static const int CATHODE_PINS_LENGTH = 4;
+  int ANODE_PINS[4] = {8, 9, 10, 11};
+  static const int ANODE_PINS_LENGTH = 4;
 
-  uint8_t PATTERNS[10] = {
-    0b11111100,
-    0b01100000,
-    0b11011010,
-    0b11110010,
-    0b01100110,
-    0b10110110,
-    0b10111110,
-    0b11100100,
-    0b11111110,
-    0b11110110
-  };
+  uint8_t PATTERNS[10] = {0b00000011, 0b10011111, 0b00100101, 0b00001101,
+                          0b10011001, 0b01001001, 0b01000001, 0b00011011,
+                          0b00000001, 0b00001001};
 };
 
 #endif
