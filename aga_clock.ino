@@ -8,22 +8,18 @@ boolean isPlaying = false;
 
 SevenSegmentController SevenSegmentController;
 
-Serial DFSerial(0, 1);
-
 void setup() {
-  pinMode(2, INPUT);
   pinMode(13, INPUT);
 
-  struct dateTime dt = {30, 59, 12, 1, 1, 19, 2};
+  struct dateTime dt = {0, 0, 13, 1, 1, 19, 2};
+  struct alarmTime at = {5, 13, 1, 2};
+
   RTC8564.begin(&dt);
+  RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
 
-  String currentClock = "0000";
-
-  DFSerial.begin(9600);
-  Serial.begin(115200);
-
-  mp3_set_serial(DFSerial);
-  mp3_set_volume(10);
+  Serial.begin(9600);
+  mp3_set_serial(Serial);
+  mp3_set_volume(5);
 }
 
 void addMinutes() {
@@ -52,45 +48,17 @@ void addMinutes() {
                    datetime.weekday};
   }
 
-  RTC8564.setDateTime(&newDatetime);
-}
-
-void playMusic(String now) {
-  Serial.println(now);
-  Serial.println(model);
-  if (!isPlaying) {
-    switch (model) {
-    case 1: //阿賀小学校
-      if (now == "1040")
-        mp3_play(1);
-      if (now == "1325")
-        mp3_play(2);
-      break;
-    case 2: //原小学校
-      if (now == "0800")
-        mp3_play(1);
-      break;
-    case 3: //市民センター
-      if (now == "0829")
-        mp3_play(1);
-      if (now == "1200")
-        mp3_play(2);
-      if (now == "1300") {
-        Serial.println("playing");
-        mp3_play(3);
-      }
-      if (now == "1715")
-        mp3_play(4);
-      break;
-    case 4: //まちづくりセンター
-      if (now == "1200")
-        mp3_play(1);
-      if (now == "1700")
-        mp3_play(2);
-      break;
+    if (datetime.hour == 23 && datetime.minute == 59) {
+      newDatetime = {0,
+                     0,
+                     0,
+                     datetime.day,
+                     datetime.month,
+                     datetime.year,
+                     datetime.weekday};
     }
-    isPlaying = true;
-  }
+
+  RTC8564.setDateTime(&newDatetime);
 }
 
 void loop() {
@@ -102,15 +70,14 @@ void loop() {
     delay(100);
   }
 
-  if (digitalRead(2) == HIGH) {
-    isPlaying = false;
-  }
-
   if (RTC8564.getDateTime(&dt) == 0) {
     sprintf(RTCTime, "%2d%2d", dt.hour, dt.minute);
   }
 
-  playMusic(RTCTime);
+  if (RTC8564.getAlarmFlag()) {
+    mp3_play(4);
+    RTC8564.clearAlarmFlag();
+  }
 
   String currentClock = RTCTime;
   SevenSegmentController.displayNumbers(currentClock);
