@@ -1,4 +1,8 @@
-RTC8564.cpp
-RTC8564.h
-DFPlayer_Mini_Mp3.cpp
-DFPlayer_Mini_Mp3.h
+src/aga_clock-big-sound/SevenSegmentController.cpp
+src/aga_clock-big-sound/SevenSegmentController.h
+
+src/aga_clock-small-sound/SevenSegmentController.cpp
+src/aga_clock-small-sound/SevenSegmentController.h
+
+src/aga_clock-small/SevenSegmentController.cpp
+src/aga_clock-small/SevenSegmentController.h
