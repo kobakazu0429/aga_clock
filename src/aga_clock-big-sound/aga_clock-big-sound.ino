@@ -2,17 +2,23 @@
 #include "RTC8564.h"
 #include "SevenSegmentController.h"
 #include <SoftwareSerial.h>
+#include "AlarmList.hpp"
 
-int model = 3;
-boolean isPlaying = false;
-int next = 1;
+// 阿賀小学校         :  0
+// 原小学校           :  1
+// 市民センター       :  2
+// まちづくりセンター :  3
+// デバッグ用         : 99
+
+#define MODEL 99
 
 SevenSegmentController SevenSegmentController;
+AlarmList AlarmList(MODEL);
 
 void setup() {
   pinMode(13, INPUT);
 
-  struct dateTime dt = {0, 0, 13, 1, 1, 19, 2};
+  struct dateTime dt = {0, 0, 0, 1, 1, 19, 2};
   struct alarmTime at = {5, 13, 1, 2};
 
   RTC8564.begin(&dt);
@@ -20,7 +26,7 @@ void setup() {
 
   Serial.begin(9600);
   mp3_set_serial(Serial);
-  mp3_set_volume(5);
+  mp3_set_volume(10);
 }
 
 void addMinutes() {
@@ -63,19 +69,13 @@ void addMinutes() {
 }
 
 void playMusic() {
-  // mp3_play(4);
+    mp3_play(AlarmList.getMusicNumber());
 
-  if (next == 1) {
-    mp3_play(3);
-    struct alarmTime at = {10, 13, 1, 2};
+    int hour = AlarmList.getNextAlarmHour();
+    int minutes = AlarmList.getNextAlarmMinutes();
+
+    struct alarmTime at = {minutes, hour, 1, 2};
     RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
-    next = 2;
-  } else if (next == 2) {
-    mp3_play(4);
-    struct alarmTime at = {15, 13, 1, 2};
-    RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
-    next = 1;
-  }
 }
 
 void loop() {
