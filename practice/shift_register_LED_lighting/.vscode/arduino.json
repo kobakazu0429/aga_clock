@@ -1,5 +1,0 @@
-{
-    "board": "arduino:avr:uno",
-    "port": "/dev/cu.wchusbserial14140",
-    "sketch": "shift_register_LED_lighting.ino"
-}
