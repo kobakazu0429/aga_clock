@@ -1,5 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "port": "/dev/cu.usbmodem14531",
+    "port": "/dev/cu.usbmodem14131",
     "sketch": "aga_clock-big-sound.ino"
 }

@@ -19,10 +19,9 @@ void setup() {
   pinMode(13, INPUT);
 
   struct dateTime dt = {0, 0, 0, 1, 1, 19, 2};
-  struct alarmTime at = {5, 13, 1, 2};
-
   RTC8564.begin(&dt);
-  RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
+
+  setFirstAlarm();
 
   Serial.begin(9600);
   mp3_set_serial(Serial);
@@ -66,6 +65,13 @@ void addMinutes() {
   }
 
   RTC8564.setDateTime(&newDatetime);
+}
+
+void setFirstAlarm() {
+  int hour = AlarmList.getNextAlarmHour();
+  int minutes = AlarmList.getNextAlarmMinutes();
+  struct alarmTime at = {minutes, hour, 1, 2};
+  RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
 }
 
 void playMusic() {
