@@ -15,7 +15,8 @@
 SevenSegmentController SevenSegmentController;
 AlarmList AlarmList(MODEL);
 
-void setup() {
+void setup()
+{
   pinMode(13, INPUT);
 
   struct dateTime dt = {0, 0, 0, 1, 1, 19, 2};
@@ -28,13 +29,15 @@ void setup() {
   mp3_set_volume(10);
 }
 
-void addMinutes() {
+void addMinutes()
+{
   struct dateTime datetime;
   RTC8564.getDateTime(&datetime);
 
   struct dateTime newDatetime;
 
-  if (datetime.minute < 59) {
+  if (datetime.minute < 59)
+  {
     newDatetime = {0,
                    datetime.minute + 1,
                    datetime.hour,
@@ -44,7 +47,8 @@ void addMinutes() {
                    datetime.weekday};
   }
 
-  if (datetime.minute == 59) {
+  if (datetime.minute == 59)
+  {
     newDatetime = {0,
                    0,
                    datetime.hour + 1,
@@ -54,27 +58,30 @@ void addMinutes() {
                    datetime.weekday};
   }
 
-  if (datetime.hour == 23 && datetime.minute == 59) {
+  if (datetime.hour == 23 && datetime.minute == 59)
+  {
     newDatetime = {0,
-                    0,
-                    0,
-                    datetime.day,
-                    datetime.month,
-                    datetime.year,
-                    datetime.weekday};
+                   0,
+                   0,
+                   datetime.day,
+                   datetime.month,
+                   datetime.year,
+                   datetime.weekday};
   }
 
   RTC8564.setDateTime(&newDatetime);
 }
 
-void setFirstAlarm() {
+void setFirstAlarm()
+{
   int hour = AlarmList.getNextAlarmHour();
   int minutes = AlarmList.getNextAlarmMinutes();
   struct alarmTime at = {minutes, hour, 1, 2};
   RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
 }
 
-void playMusic() {
+void playMusic()
+{
   mp3_play(AlarmList.getMusicNumber());
 
   int hour = AlarmList.getNextAlarmHour();
@@ -84,20 +91,24 @@ void playMusic() {
   RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
 }
 
-void loop() {
+void loop()
+{
   struct dateTime dt;
   char RTCTime[4];
 
-  if (digitalRead(13) == HIGH) {
+  if (digitalRead(13) == HIGH)
+  {
     addMinutes();
     delay(100);
   }
 
-  if (RTC8564.getDateTime(&dt) == 0) {
+  if (RTC8564.getDateTime(&dt) == 0)
+  {
     sprintf(RTCTime, "%2d%2d", dt.hour, dt.minute);
   }
 
-  if (RTC8564.getAlarmFlag()) {
+  if (RTC8564.getAlarmFlag())
+  {
     RTC8564.clearAlarmFlag();
     playMusic();
   }

@@ -1,34 +1,43 @@
+#include "AlarmList.hpp"
 #include "DFPlayer_Mini_Mp3.h"
 #include "RTC8564.h"
 #include "SevenSegmentController.h"
 #include <SoftwareSerial.h>
 
-int model = 3;
-boolean isPlaying = false;
+// 阿賀小学校         :  0
+// 原小学校           :  1
+// 市民センター       :  2
+// まちづくりセンター :  3
+// デバッグ用         : 99
+
+#define MODEL 99
 
 SevenSegmentController SevenSegmentController;
+AlarmList AlarmList(MODEL);
 
-void setup() {
+void setup()
+{
   pinMode(13, INPUT);
 
-  struct dateTime dt = {0, 0, 13, 1, 1, 19, 2};
-  struct alarmTime at = {5, 13, 1, 2};
-
+  struct dateTime dt = {0, 0, 0, 1, 1, 19, 2};
   RTC8564.begin(&dt);
-  RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
+
+  setFirstAlarm();
 
   Serial.begin(9600);
   mp3_set_serial(Serial);
-  mp3_set_volume(5);
+  mp3_set_volume(10);
 }
 
-void addMinutes() {
+void addMinutes()
+{
   struct dateTime datetime;
   RTC8564.getDateTime(&datetime);
 
   struct dateTime newDatetime;
 
-  if (datetime.minute < 59) {
+  if (datetime.minute < 59)
+  {
     newDatetime = {0,
                    datetime.minute + 1,
                    datetime.hour,
@@ -38,7 +47,8 @@ void addMinutes() {
                    datetime.weekday};
   }
 
-  if (datetime.minute == 59) {
+  if (datetime.minute == 59)
+  {
     newDatetime = {0,
                    0,
                    datetime.hour + 1,
@@ -48,35 +58,59 @@ void addMinutes() {
                    datetime.weekday};
   }
 
-    if (datetime.hour == 23 && datetime.minute == 59) {
-      newDatetime = {0,
-                     0,
-                     0,
-                     datetime.day,
-                     datetime.month,
-                     datetime.year,
-                     datetime.weekday};
-    }
+  if (datetime.hour == 23 && datetime.minute == 59)
+  {
+    newDatetime = {0,
+                   0,
+                   0,
+                   datetime.day,
+                   datetime.month,
+                   datetime.year,
+                   datetime.weekday};
+  }
 
   RTC8564.setDateTime(&newDatetime);
 }
 
-void loop() {
+void setFirstAlarm()
+{
+  int hour = AlarmList.getNextAlarmHour();
+  int minutes = AlarmList.getNextAlarmMinutes();
+  struct alarmTime at = {minutes, hour, 1, 2};
+  RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
+}
+
+void playMusic()
+{
+  mp3_play(AlarmList.getMusicNumber());
+
+  int hour = AlarmList.getNextAlarmHour();
+  int minutes = AlarmList.getNextAlarmMinutes();
+
+  struct alarmTime at = {minutes, hour, 1, 2};
+  RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
+}
+
+void loop()
+{
   struct dateTime dt;
   char RTCTime[4];
 
-  if (digitalRead(13) == HIGH) {
+  if (digitalRead(13) == HIGH)
+  {
     addMinutes();
     delay(100);
   }
 
-  if (RTC8564.getDateTime(&dt) == 0) {
+  if (RTC8564.getDateTime(&dt) == 0)
+  {
     sprintf(RTCTime, "%2d%2d", dt.hour, dt.minute);
   }
 
-  if (RTC8564.getAlarmFlag()) {
-    mp3_play(4);
+  if (RTC8564.getAlarmFlag())
+  {
     RTC8564.clearAlarmFlag();
+    playMusic();
   }
 
   String currentClock = RTCTime;
