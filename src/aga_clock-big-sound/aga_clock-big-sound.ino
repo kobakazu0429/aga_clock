@@ -1,8 +1,8 @@
+#include "AlarmList.hpp"
 #include "DFPlayer_Mini_Mp3.h"
 #include "RTC8564.h"
 #include "SevenSegmentController.h"
 #include <SoftwareSerial.h>
-#include "AlarmList.hpp"
 
 // 阿賀小学校         :  0
 // 原小学校           :  1
@@ -55,27 +55,27 @@ void addMinutes() {
                    datetime.weekday};
   }
 
-    if (datetime.hour == 23 && datetime.minute == 59) {
-      newDatetime = {0,
-                     0,
-                     0,
-                     datetime.day,
-                     datetime.month,
-                     datetime.year,
-                     datetime.weekday};
-    }
+  if (datetime.hour == 23 && datetime.minute == 59) {
+    newDatetime = {0,
+                    0,
+                    0,
+                    datetime.day,
+                    datetime.month,
+                    datetime.year,
+                    datetime.weekday};
+  }
 
   RTC8564.setDateTime(&newDatetime);
 }
 
 void playMusic() {
-    mp3_play(AlarmList.getMusicNumber());
+  mp3_play(AlarmList.getMusicNumber());
 
-    int hour = AlarmList.getNextAlarmHour();
-    int minutes = AlarmList.getNextAlarmMinutes();
+  int hour = AlarmList.getNextAlarmHour();
+  int minutes = AlarmList.getNextAlarmMinutes();
 
-    struct alarmTime at = {minutes, hour, 1, 2};
-    RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
+  struct alarmTime at = {minutes, hour, 1, 2};
+  RTC8564.setAlarm((RTC8564_AE_MINUTE | RTC8564_AE_HOUR), &at, 0);
 }
 
 void loop() {
