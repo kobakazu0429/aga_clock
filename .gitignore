@@ -1,3 +1,7 @@
+# Editor
+arduino.json
+
+# Symbolic Links
 src/aga_clock-big-sound/DFPlayer_Mini_Mp3.cpp
 src/aga_clock-big-sound/DFPlayer_Mini_Mp3.h
 src/aga_clock-big-sound/RTC8564.cpp
