@@ -3,7 +3,7 @@
 
 AlarmList::AlarmList(int model)
 {
-  _model = model;
+  _model = model == 99 ? 4 : model;
 
   // struct Alarm {
   //   int index;

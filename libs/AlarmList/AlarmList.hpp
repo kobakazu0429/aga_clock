@@ -21,7 +21,7 @@ private:
     int musicNumber;
   };
 
-  Alarm AlarmRecords[4][4];
+  Alarm AlarmRecords[5][4];
 };
 
 #endif
