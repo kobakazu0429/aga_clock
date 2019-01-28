@@ -8,6 +8,8 @@ src/aga_clock-big-sound/RTC8564.cpp
 src/aga_clock-big-sound/RTC8564.h
 src/aga_clock-big-sound/SevenSegmentController.cpp
 src/aga_clock-big-sound/SevenSegmentController.h
+src/aga_clock-big-sound/AlarmList.cpp
+src/aga_clock-big-sound/AlarmList.hpp
 
 src/aga_clock-small-sound/DFPlayer_Mini_Mp3.cpp
 src/aga_clock-small-sound/DFPlayer_Mini_Mp3.h
@@ -15,6 +17,8 @@ src/aga_clock-small-sound/RTC8564.cpp
 src/aga_clock-small-sound/RTC8564.h
 src/aga_clock-small-sound/SevenSegmentController.cpp
 src/aga_clock-small-sound/SevenSegmentController.h
+src/aga_clock-small-sound/AlarmList.cpp
+src/aga_clock-small-sound/AlarmList.hpp
 
 src/aga_clock-small/DFPlayer_Mini_Mp3.cpp
 src/aga_clock-small/DFPlayer_Mini_Mp3.h
