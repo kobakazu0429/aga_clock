@@ -1,5 +1,6 @@
 #include "AlarmList.hpp"
 #include "DFPlayer_Mini_Mp3.h"
+#include "MotorController.h"
 #include "RTC8564.h"
 #include "SevenSegmentController.h"
 #include <SoftwareSerial.h>
@@ -14,6 +15,7 @@
 
 SevenSegmentController SevenSegmentController;
 AlarmList AlarmList(MODEL);
+MotorController MotorController;
 
 void setup() {
   pinMode(13, INPUT);
@@ -94,6 +96,7 @@ void loop() {
 
   if (RTC8564.getAlarmFlag()) {
     RTC8564.clearAlarmFlag();
+    MotorController.move();
     playMusic();
   }
 

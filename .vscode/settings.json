@@ -3,6 +3,16 @@
     ".*rc": "json",
     "limits": "cpp",
     "memory": "cpp",
-    "utility": "cpp"
+    "utility": "cpp",
+    "fstream": "cpp",
+    "locale": "cpp",
+    "*.tcc": "cpp",
+    "__bit_reference": "cpp",
+    "__string": "cpp",
+    "algorithm": "cpp",
+    "deque": "cpp",
+    "future": "cpp",
+    "ios": "cpp",
+    "type_traits": "cpp"
   }
 }
