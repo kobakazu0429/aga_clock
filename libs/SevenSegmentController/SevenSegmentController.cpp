@@ -1,5 +1,5 @@
-#include "Arduino.h"
 #include "SevenSegmentController.h"
+#include "Arduino.h"
 
 SevenSegmentController::SevenSegmentController() {
   pinMode(SRCLK, OUTPUT);
@@ -17,8 +17,7 @@ void SevenSegmentController::sendSerialData(uint8_t patterns) {
   digitalWrite(RCLK, HIGH);
 }
 
-void SevenSegmentController::clear()
-{
+void SevenSegmentController::clear() {
   sendSerialData(0b00000000);
 
   for (int i = 0; i < ANODE_PINS_LENGTH; i++) {

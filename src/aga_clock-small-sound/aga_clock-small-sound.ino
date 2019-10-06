@@ -10,7 +10,7 @@
 // まちづくりセンター :  3
 // デバッグ用         : 99
 
-#define MODEL 99
+#define MODEL 1
 
 SevenSegmentController SevenSegmentController;
 AlarmList AlarmList(MODEL);
@@ -26,7 +26,7 @@ void setup()
 
   Serial.begin(9600);
   mp3_set_serial(Serial);
-  mp3_set_volume(10);
+  mp3_set_volume(30);
 }
 
 void addMinutes()

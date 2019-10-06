@@ -7,10 +7,13 @@
                 "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include",
                 "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/4.9.2/include",
                 "/Applications/Arduino.app/Contents/Java/tools/**",
-                "${workspaceRoot}"
+                "${workspaceRoot}",
+                "/Users/kazu/Library/Arduino15/packages/arduino/hardware/avr/1.6.23/**",
+                "/Users/kazu/Library/Arduino15/packages/arduino/tools/**"
             ],
             "forcedInclude": [
-              "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino/Arduino.h"
+                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino/Arduino.h",
+                "/Users/kazu/Library/Arduino15/packages/arduino/hardware/avr/1.6.23/cores/arduino/Arduino.h"
             ],
             "defines": [],
             "browse": {
@@ -25,8 +28,8 @@
                 "databaseFilename": ""
             },
             "macFrameworkPath": [
-              "/System/Library/Frameworks",
-              "/Library/Frameworks"
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
             ],
             "intelliSenseMode": "clang-x64",
             "compilerPath": "/usr/bin/clang",

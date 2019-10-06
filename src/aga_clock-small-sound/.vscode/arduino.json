@@ -1,5 +1,5 @@
 {
     "board": "arduino:avr:uno",
-    "port": "/dev/cu.usbmodem14531",
-    "sketch": "aga_clock.ino"
+    "port": "/dev/cu.wchusbserial14140",
+    "sketch": "aga_clock-small-sound.ino"
 }

@@ -11,20 +11,23 @@
 
 SevenSegmentController SevenSegmentController;
 
-void setup() {
+void setup()
+{
   pinMode(13, INPUT);
 
-  struct dateTime dt = {0, 0, 0, 1, 1, 19, 2};
+  struct dateTime dt = {0, 1, 0, 1, 1, 19, 2};
   RTC8564.begin(&dt);
 }
 
-void addMinutes() {
+void addMinutes()
+{
   struct dateTime datetime;
   RTC8564.getDateTime(&datetime);
 
   struct dateTime newDatetime;
 
-  if (datetime.minute < 59) {
+  if (datetime.minute < 59)
+  {
     newDatetime = {0,
                    datetime.minute + 1,
                    datetime.hour,
@@ -34,7 +37,8 @@ void addMinutes() {
                    datetime.weekday};
   }
 
-  if (datetime.minute == 59) {
+  if (datetime.minute == 59)
+  {
     newDatetime = {0,
                    0,
                    datetime.hour + 1,
@@ -44,7 +48,8 @@ void addMinutes() {
                    datetime.weekday};
   }
 
-  if (datetime.hour == 23 && datetime.minute == 59) {
+  if (datetime.hour == 23 && datetime.minute == 59)
+  {
     newDatetime = {0,
                    0,
                    0,
@@ -57,16 +62,19 @@ void addMinutes() {
   RTC8564.setDateTime(&newDatetime);
 }
 
-void loop() {
+void loop()
+{
   struct dateTime dt;
   char RTCTime[4];
 
-  if (digitalRead(13) == HIGH) {
+  if (digitalRead(13) == HIGH)
+  {
     addMinutes();
     delay(100);
   }
 
-  if (RTC8564.getDateTime(&dt) == 0) {
+  if (RTC8564.getDateTime(&dt) == 0)
+  {
     sprintf(RTCTime, "%2d%2d", dt.hour, dt.minute);
   }
 
