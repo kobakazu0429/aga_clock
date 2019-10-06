@@ -14,6 +14,8 @@ ln -s $DIR/libs/SevenSegmentController/SevenSegmentController.h            $DIR/
 ln -s $DIR/libs/SevenSegmentController/SevenSegmentController.cpp          $DIR/src/aga_clock-big-sound/SevenSegmentController.cpp
 ln -s $DIR/libs/AlarmList/AlarmList.cpp                                    $DIR/src/aga_clock-big-sound/AlarmList.cpp
 ln -s $DIR/libs/AlarmList/AlarmList.hpp                                    $DIR/src/aga_clock-big-sound/AlarmList.hpp
+ln -s $DIR/libs/MotorController/MotorController.cpp                        $DIR/src/aga_clock-big-sound/MotorController.cpp
+ln -s $DIR/libs/MotorController/MotorController.h                          $DIR/src/aga_clock-big-sound/MotorController.h
 echo "src/aga_clock-big-sound : done"
 
 # aga_clock-small-sound
