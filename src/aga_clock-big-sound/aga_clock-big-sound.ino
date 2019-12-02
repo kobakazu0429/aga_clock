@@ -44,9 +44,7 @@ void addMinutes() {
                    datetime.month,
                    datetime.year,
                    datetime.weekday};
-  }
-
-  if (datetime.minute == 59) {
+  } else {
     newDatetime = {0,
                    0,
                    datetime.hour + 1,
@@ -62,6 +60,22 @@ void addMinutes() {
   }
 
   RTC8564.setDateTime(&newDatetime);
+}
+
+void resetTimeIfInvalidTime() {
+  struct dateTime datetime;
+  RTC8564.getDateTime(&datetime);
+
+  if (datetime.hour > 23 || datetime.minute > 59) {
+    struct dateTime newDatetime = {0,
+                                   0,
+                                   0,
+                                   datetime.day,
+                                   datetime.month,
+                                   datetime.year,
+                                   datetime.weekday};
+    RTC8564.setDateTime(&newDatetime);
+  }
 }
 
 void setFirstAlarm() {
@@ -93,6 +107,8 @@ void loop() {
   if (RTC8564.getDateTime(&dt) == 0) {
     sprintf(RTCTime, "%2d%2d", dt.hour, dt.minute);
   }
+
+   resetTimeIfInvalidTime();
 
   if (RTC8564.getAlarmFlag()) {
     RTC8564.clearAlarmFlag();
