@@ -1,5 +1,7 @@
 #ifndef SevenSegmentController_h
 #define SevenSegmentController_h
+#include <Arduino.h>
+#include <string.h>
 
 class SevenSegmentController {
 public:
